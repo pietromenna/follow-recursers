@@ -1,0 +1,25 @@
+{
+  "name": "recursers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "watch-js": "watchify js/app.js -o build/bundle.js --debug --verbose"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.3",
+    "react": "^0.13.2"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.8",
+    "reactify": "^1.1.0",
+    "watchify": "^3.2.0"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  }
+}
