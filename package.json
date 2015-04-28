@@ -14,6 +14,7 @@
     "express-session": "^1.11.1",
     "hackerschool-api": "^0.1.1",
     "jade": "^1.9.2",
+    "lodash": "^3.7.0",
     "node-twitter-api": "^1.6.0",
     "react": "^0.13.2",
     "superagent": "^1.2.0"

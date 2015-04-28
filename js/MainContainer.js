@@ -3,6 +3,8 @@ var React = require('react');
 var Batch = require('./Batch');
 var SaveBatchesButton = require('./SaveBatchesButton');
 
+var request = require('superagent');
+
 var MainContainer = React.createClass({
   getInitialState: function () {
     return {
@@ -11,9 +13,14 @@ var MainContainer = React.createClass({
   },
 
   componentDidMount: function () {
-    this.setState({
-      batches: this.props.batches
-    });
+    request
+      .get('/batches')
+      .set('Accept', 'application/json')
+      .end(function (err, data) {
+        this.setState({
+          batches: JSON.parse(data.text)
+        });
+      }.bind(this));
   },
 
   _toggleSelected: function (batchName) {
@@ -34,10 +41,11 @@ var MainContainer = React.createClass({
   },
 
   render: function () {
-    var batches = this.props.batches.map(function (batch, index) {
+    var batches = this.state.batches.map(function (batch, index) {
       return (
         <Batch
           name={ batch.name }
+          id={ batch.id }
           key={ index }
           selected={ batch.selected }
           toggle={ this._toggleSelected }
