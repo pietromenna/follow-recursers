@@ -59,9 +59,29 @@ app.get('/oauth/twitter/callback', function(req, res) {
         //Step 4: Verify Credentials belongs here
         req.session.accessToken = accessToken;
         req.session.accessTokenSecret = accessTokenSecret;
+        console.log(req.session);
         res.redirect("/")
     }
 });
+});
+
+app.post('/twitter/follow', function (req, res) {
+  var usernames = req.body.usernames;
+
+  usernames.forEach(function (username) {
+    twitter.friendships('create', {
+      screen_name: username.twitter,
+      follow: true
+    },
+    req.session.accessToken,
+    req.session.accessTokenSecret,
+    function (err, data) {
+      if (err)
+        console.log(err);
+      else
+        console.log(data);
+    });
+  });
 });
 
 app.get('/oauth/recurse/callback', function(req, res) {

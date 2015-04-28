@@ -14,8 +14,6 @@ var MainContainer = React.createClass({
     this.setState({
       batches: this.props.batches
     });
-
-
   },
 
   _toggleSelected: function (batchName) {
