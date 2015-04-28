@@ -14,6 +14,8 @@ var MainContainer = React.createClass({
     this.setState({
       batches: this.props.batches
     });
+
+
   },
 
   _toggleSelected: function (batchName) {
@@ -49,7 +51,7 @@ var MainContainer = React.createClass({
       <div className="main-container">
         <h1>Recursers</h1>
         { batches }
-        <SaveBatchesButton />
+        <SaveBatchesButton batches={ this.state.batches }/>
       </div>
     );
   }
