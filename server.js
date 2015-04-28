@@ -24,9 +24,9 @@ var hackerschool = require('hackerschool-api');
 var client = hackerschool.client();
 
 var auth = hackerschool.auth({
-  client_id: process.env.CLIENT_ID || 'test',
-  client_secret: process.env.CLIENT_SECRET || 'teste',
-  redirect_uri: process.env.REDIRECT_URI || 'test'
+  client_id: process.env.RECURSE_CLIENT_ID || 'test',
+  client_secret: process.env.RECURSE_CLIENT_SECRET || 'teste',
+  redirect_uri: process.env.RECURSE_REDIRECT_URI || 'http://localhost:4000/oauth/recurse/callback'
 });
 
 app.get('/login', function(req, res) {
@@ -89,12 +89,24 @@ app.get('/oauth/recurse/callback', function(req, res) {
 
   auth.getToken(code)
   .then(function(token) {
-    // tells the client instance to use this token for all requests
-	res.redirect("/");
     client.setToken(token);
+    // tells the client instance to use this token for all requests
+	res.redirect("/"); 
   }, function(err) {
     res.send('There was an error getting the token');
   });
+});
+
+app.get('/batches', function(req, res){
+  client.batches.list().then(function(batches){
+    res.json(batches);
+  })
+});
+
+app.get('/people/:batchid', function(req, res){
+  client.batches.people(req.params.batchid).then(function(people){
+    res.json(people);
+  })
 });
 
 var server = app.listen(4000, function () {
