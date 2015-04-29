@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "watch-js": "watchify js/app.js -o build/bundle.js --debug --verbose",
+    "watch-js": "watchify js/app.jsx --extension=.jsx -o build/bundle.js --debug --verbose",
     "start": "node server.js"
   },
   "author": "",
