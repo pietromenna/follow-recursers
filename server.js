@@ -19,6 +19,8 @@ var twitter = new twitterAPI({
     callback: process.env.TWITTER_CALLBACK || 'http://localhost:4000/oauth/twitter/callback'
 });
 
+var ghAccessToken;
+
 // Recurse Center API
 var hackerschool = require('hackerschool-api');
 
@@ -29,28 +31,6 @@ var auth = hackerschool.auth({
   client_secret: process.env.RECURSE_CLIENT_SECRET || 'teste',
   redirect_uri: process.env.RECURSE_REDIRECT_URI || 'http://localhost:4000/oauth/recurse/callback'
 });
-
-// GitHub API
-var GitHubApi = require("github");
-var github = new GitHubApi({
-    // required
-    version: "3.0.0",
-    // optional
-    debug: true,
-    protocol: "http",
-    host: "api.github.com", // should be api.github.com for GitHub
-    pathPrefix: "/api/v3", // for some GHEs; none for GitHub
-    timeout: 5000,
-    headers: {
-        "user-agent": "Recursers App" // GitHub is happy with a unique user agent
-    }
-});
-
-// github.authenticate({
-//     type: "oauth",
-//     key:  process.env.GITHUB_CLIENT_ID || 'test',
-//     secret: process.env.GITHUB_CLIENT_SECRET || 'teste'
-// })
 
 app.get('/login', function(req, res) {
   var authUrl = auth.createAuthUrl();
@@ -88,7 +68,7 @@ app.get('/login/github', function(req, res) {
   res.redirect("https://github.com/login/oauth/authorize?" +
     "client_id="+ process.env.GITHUB_CLIENT_ID + "&" +
     "redirect_uri="+ "http://localhost:4000/oauth/github/callback" + "&" +
-    "scopes=" + "user:follow" + "&" +
+    "scope=" + "user:follow" + "&" +
     "state=" + "owfowjowjfjwofjw"
     );
 });
@@ -103,10 +83,7 @@ app.get('/oauth/github/callback', function(req, res) {
 
   }, function(error,response,body)
   {
-    github.authenticate({
-      type: "oauth",
-      token: JSON.parse(body).access_token
-    });
+    ghAccessToken = JSON.parse(body).access_token;
 
     res.redirect('/');
   });
@@ -134,12 +111,19 @@ app.post('/twitter/follow', function (req, res) {
 });
 
 app.post('/github/follow', function (req, res) {
+
   var usernames = req.body.usernames;
 
   usernames.forEach(function (username) {
-    github.user.followUser({user: username}, function(error, response) {
-      console.log(error);
-      console.log(response);
+    var url = 'https://api.github.com/user/following/' + username + '?access_token=' + ghAccessToken;
+
+    request({
+      method: 'put',
+      url: url,
+      headers: {
+        'User-Agent': 'Recursers App',
+        'Content-Length': '0',
+      }
     });
   });
 });
@@ -151,7 +135,7 @@ app.get('/oauth/recurse/callback', function(req, res) {
   .then(function(token) {
     client.setToken(token);
     // tells the client instance to use this token for all requests
-	res.redirect("/"); 
+	res.redirect("/");
   }, function(err) {
     res.send('There was an error getting the token');
   });
