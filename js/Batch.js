@@ -18,9 +18,9 @@ var Batch = React.createClass({
         var peopleArr = JSON.parse(data.text);
 
         peopleArr.forEach(function (person) {
-          person.selected = false;
+          person.selected = this.props.selected;
           people[person.id] = person;
-        });
+        }.bind(this));
 
         this.props.showPeople(this.props.id, people);
       }.bind(this));

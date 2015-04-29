@@ -3,7 +3,7 @@ var React = require('react');
 var Batch = require('./Batch');
 var GithubFollowButton = require('./GithubFollowButton');
 var TwitterFollowButton = require('./TwitterFollowButton');
-
+var _ = require('lodash');
 var request = require('superagent');
 
 var MainContainer = React.createClass({
@@ -58,7 +58,10 @@ var MainContainer = React.createClass({
         var batch = prevState.batches[i];
         if (batch.name === batchName) {
           batch.selected = !batch.selected;
-
+          var people = _.values(batch.people);
+          people.forEach(function(person, personIndex){
+            batch.people[person.id].selected = batch.selected;
+          })
           break;
         }
       }
