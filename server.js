@@ -115,7 +115,7 @@ app.post('/github/follow', function (req, res) {
   var usernames = req.body.usernames;
 
   usernames.forEach(function (username) {
-    var url = 'https://api.github.com/user/following/' + username + '?access_token=' + ghAccessToken;
+    var url = 'https://api.github.com/user/following/' + username.github + '?access_token=' + ghAccessToken;
 
     request({
       method: 'put',
