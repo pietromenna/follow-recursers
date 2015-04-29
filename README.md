@@ -7,7 +7,7 @@ This web app were you login with your RC account, give permission to modify your
 `npm install`
 
 ## Run
-`node server.js`
+`npm start`
 
 [1]: https://www.recurse.com
 [2]: https://github.com
