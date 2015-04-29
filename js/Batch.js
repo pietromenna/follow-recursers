@@ -5,12 +5,6 @@ var request = require('superagent');
 var _ = require('lodash');
 
 var Batch = React.createClass({
-  getInitialState: function () {
-    return {
-      people: {}
-    };
-  },
-
   _toggle: function () {
     this.props.toggle(this.props.name);
   },
@@ -28,26 +22,19 @@ var Batch = React.createClass({
           people[person.id] = person;
         });
 
-        this.setState({
-          people: people
-        });
+        this.props.showPeople(this.props.id, people);
       }.bind(this));
   },
 
-  _togglePerson: function (id) {
-    this.setState(function (prevState) {
-      prevState.people[id].selected = !prevState.people[id].selected;
-      return {
-        people: prevState.people
-      };
-    });
+  _togglePerson: function (id, batch) {
+    this.props.togglePerson(id, this.props.id);
   },
 
   render: function () {
     var people;
 
-    if (this.state.people) {
-      people = _.values(this.state.people).map(function (person, index) {
+    if (this.props.people) {
+      people = _.values(this.props.people).map(function (person, index) {
         return (
           <Person
             name={ person.first_name + ' ' + person.last_name }
@@ -62,7 +49,7 @@ var Batch = React.createClass({
 
     var show;
 
-    if (this.state.people) {
+    if (!this.props.people) {
       show = <button onClick={ this._showPeople } type="button">Show</button>
     }
 

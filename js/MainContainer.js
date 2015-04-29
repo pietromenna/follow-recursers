@@ -1,7 +1,8 @@
 var React = require('react');
 
 var Batch = require('./Batch');
-var SaveBatchesButton = require('./SaveBatchesButton');
+var GithubFollowButton = require('./GithubFollowButton');
+var TwitterFollowButton = require('./TwitterFollowButton');
 
 var request = require('superagent');
 
@@ -21,6 +22,34 @@ var MainContainer = React.createClass({
           batches: JSON.parse(data.text)
         });
       }.bind(this));
+  },
+
+  _showBatchPeople: function (batchId, people) {
+    this.setState(function (prevState) {
+      prevState.batches.forEach(function (curBatch, batchIndex) {
+        if (curBatch.id === batchId) {
+          prevState.batches[batchIndex].people = people;
+        }
+      });
+
+      return {
+        batches: prevState.batches
+      }
+    });
+  },
+
+  _toggleBatchPerson: function (id, batchId) {
+    this.setState(function (prevState) {
+      prevState.batches.forEach(function (curBatch, batchIndex) {
+        if (curBatch.id === batchId) {
+          prevState.batches[batchIndex].people[id].selected = !prevState.batches[batchIndex].people[id].selected;
+        }
+      });
+
+      return {
+        batches: prevState.batches
+      };
+    });
   },
 
   _toggleSelected: function (batchName) {
@@ -46,18 +75,21 @@ var MainContainer = React.createClass({
         <Batch
           name={ batch.name }
           id={ batch.id }
+          people={ batch.people }
           key={ index }
           selected={ batch.selected }
           toggle={ this._toggleSelected }
+          togglePerson={ this._toggleBatchPerson }
+          showPeople={ this._showBatchPeople }
         />
       );
     }.bind(this));
 
     return (
       <div className="main-container">
-        <h1>Recursers</h1>
+        <GithubFollowButton batches={ this.state.batches }/>
+        <TwitterFollowButton batches={ this.state.batches }/>
         { batches }
-        <SaveBatchesButton batches={ this.state.batches }/>
       </div>
     );
   }
