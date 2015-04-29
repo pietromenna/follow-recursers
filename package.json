@@ -12,11 +12,13 @@
     "body-parser": "^1.12.3",
     "express": "^4.12.3",
     "express-session": "^1.11.1",
+    "github": "^0.2.4",
     "hackerschool-api": "^0.1.1",
     "jade": "^1.9.2",
     "lodash": "^3.7.0",
     "node-twitter-api": "^1.6.0",
     "react": "^0.13.2",
+    "request": "^2.55.0",
     "superagent": "^1.2.0"
   },
   "devDependencies": {

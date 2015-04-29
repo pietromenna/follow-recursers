@@ -2,6 +2,7 @@ var session = require('express-session')
 var bodyParser = require('body-parser')
 var express = require('express');
 var app = express();
+var request = require('request');
 
 app.use(session({secret: "hohoinonournvo"}))
 app.use(bodyParser.json());
@@ -29,6 +30,28 @@ var auth = hackerschool.auth({
   redirect_uri: process.env.RECURSE_REDIRECT_URI || 'http://localhost:4000/oauth/recurse/callback'
 });
 
+// GitHub API
+var GitHubApi = require("github");
+var github = new GitHubApi({
+    // required
+    version: "3.0.0",
+    // optional
+    debug: true,
+    protocol: "http",
+    host: "api.github.com", // should be api.github.com for GitHub
+    pathPrefix: "/api/v3", // for some GHEs; none for GitHub
+    timeout: 5000,
+    headers: {
+        "user-agent": "Recursers App" // GitHub is happy with a unique user agent
+    }
+});
+
+// github.authenticate({
+//     type: "oauth",
+//     key:  process.env.GITHUB_CLIENT_ID || 'test',
+//     secret: process.env.GITHUB_CLIENT_SECRET || 'teste'
+// })
+
 app.get('/login', function(req, res) {
   var authUrl = auth.createAuthUrl();
 
@@ -36,12 +59,11 @@ app.get('/login', function(req, res) {
   res.redirect(authUrl);
 });
 
-app.get('/twitterlogin', function(req, res) {
+app.get('/login/twitter', function(req, res) {
 	twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results){
 	    if (error) {
 	        console.log("Error getting OAuth request token : " + error);
 	    } else {
-	        //store token and tokenSecret somewhere, you'll need them later; redirect user
 	        req.session.requestToken = requestToken;
 	        req.session.requestTokenSecret = requestTokenSecret;
 	        res.redirect(twitter.getAuthUrl(requestToken));
@@ -55,15 +77,42 @@ app.get('/oauth/twitter/callback', function(req, res) {
     if (error) {
         console.log(error);
     } else {
-        //store accessToken and accessTokenSecret somewhere (associated to the user)
-        //Step 4: Verify Credentials belongs here
         req.session.accessToken = accessToken;
         req.session.accessTokenSecret = accessTokenSecret;
-        console.log(req.session);
         res.redirect("/")
     }
 });
 });
+
+app.get('/login/github', function(req, res) {
+  res.redirect("https://github.com/login/oauth/authorize?" +
+    "client_id="+ process.env.GITHUB_CLIENT_ID + "&" +
+    "redirect_uri="+ "http://localhost:4000/oauth/github/callback" + "&" +
+    "scopes=" + "user:follow" + "&" +
+    "state=" + "owfowjowjfjwofjw"
+    );
+});
+
+app.get('/oauth/github/callback', function(req, res) {
+  request.post(
+    { headers: {"Accept": 'application/json'},
+      url: "https://github.com/login/oauth/access_token",
+      form: {client_id: process.env.GITHUB_CLIENT_ID,
+          client_secret: process.env.GITHUB_CLIENT_SECRET,
+          code: req.query.code}
+
+  }, function(error,response,body)
+  {
+    github.authenticate({
+      type: "oauth",
+      token: JSON.parse(body).access_token
+    });
+
+    res.redirect('/');
+  });
+});
+
+
 
 app.post('/twitter/follow', function (req, res) {
   var usernames = req.body.usernames;
@@ -80,6 +129,17 @@ app.post('/twitter/follow', function (req, res) {
         console.log(err);
       else
         console.log(data);
+    });
+  });
+});
+
+app.post('/github/follow', function (req, res) {
+  var usernames = req.body.usernames;
+
+  usernames.forEach(function (username) {
+    github.user.followUser({user: username}, function(error, response) {
+      console.log(error);
+      console.log(response);
     });
   });
 });
