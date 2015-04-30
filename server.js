@@ -75,7 +75,7 @@ app.get('/oauth/recurse/callback', function(req, res) {
 
 
 /////////////////////
-// Twitter 
+// Twitter
 /////////////////////
 app.get('/login/twitter', function(req, res) {
 	twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results){
@@ -95,11 +95,22 @@ app.get('/oauth/twitter/callback', function(req, res) {
     if (error) {
         console.log(error);
     } else {
-        req.session.accessToken = accessToken;
-        req.session.accessTokenSecret = accessTokenSecret;
+        req.session.twttrAccessToken = accessToken;
+        req.session.twttrAccessTokenSecret = accessTokenSecret;
         res.redirect("/")
     }
 });
+});
+
+app.get('/twitter/loggedin', function (req, res) {
+  if (!req.session.twttrAccessToken) {
+    res.status(401);
+  }
+  else {
+    res.status(200);
+  }
+
+  res.end();
 });
 
 app.post('/twitter/follow', function (req, res) {
@@ -110,13 +121,11 @@ app.post('/twitter/follow', function (req, res) {
       screen_name: username.twitter,
       follow: true
     },
-    req.session.accessToken,
-    req.session.accessTokenSecret,
+    req.session.twttrAccessToken,
+    req.session.twttrAccessTokenSecret,
     function (err, data) {
       if (err)
         console.log(err);
-      else
-        console.log(data);
     });
   });
 });
@@ -148,6 +157,18 @@ app.get('/oauth/github/callback', function(req, res) {
     res.redirect('/');
   });
 });
+
+app.get('/github/loggedin', function (req, res) {
+  if (!ghAccessToken) {
+    res.status(401);
+  }
+  else {
+    res.status(200);
+  }
+
+  res.end();
+});
+
 
 app.post('/github/follow', function (req, res) {
   var usernames = req.body.usernames;

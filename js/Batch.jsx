@@ -5,11 +5,33 @@ var request = require('superagent');
 var _ = require('lodash');
 
 var Batch = React.createClass({
+  getInitialState: function () {
+    return {
+      showPeople: false
+    };
+  },
+
   _toggle: function () {
+    if (!this.props.people) {
+      this._getPeople();
+    }
+
     this.props.toggle(this.props.name);
   },
 
-  _showPeople: function () {
+  _togglePeople: function () {
+    if (!this.props.people) {
+      this._getPeople();
+    }
+
+    this.setState(function (prevState) {
+      return {
+        showPeople: !prevState.showPeople
+      };
+    });
+  },
+
+  _getPeople: function () {
     request
       .get('/people/' + this.props.id)
       .set('Accept', 'application/json')
@@ -33,7 +55,7 @@ var Batch = React.createClass({
   render: function () {
     var people;
 
-    if (this.props.people) {
+    if (this.state.showPeople) {
       people = _.values(this.props.people).map(function (person, index) {
         return (
           <Person
@@ -47,12 +69,6 @@ var Batch = React.createClass({
       }.bind(this));
     }
 
-    var show;
-
-    if (!this.props.people) {
-      show = <button onClick={ this._showPeople } type="button">Show</button>
-    }
-
     return (
       <div className="batch">
          <input
@@ -62,7 +78,7 @@ var Batch = React.createClass({
           onChange={ this._toggle }
         />
         <h2>{ this.props.name }</h2>
-        { show }
+        <button onClick={ this._togglePeople } type="button">{ this.state.showPeople ? 'Hide' : 'Show' }</button>
         <div className="people">
           { people }
         </div>
