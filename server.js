@@ -29,11 +29,9 @@ app.get('/', function(req, res){
   }
 });
 
-var req.session.ghAccessToken;
 /////////////////////
 // Recurse Center API
 /////////////////////
-
 var hackerschool = require('hackerschool-api');
 var client = hackerschool.client();
 
