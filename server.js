@@ -186,7 +186,7 @@ app.post('/github/follow', function (req, res) {
   });
 });
 
-var http_port = process.env.port || 4000;
+var http_port = process.env.PORT || 4000;
 var server = app.listen(http_port, function () {
 var host = server.address().address;
 var port = server.address().port;
