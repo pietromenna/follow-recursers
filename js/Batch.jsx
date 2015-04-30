@@ -44,6 +44,8 @@ var Batch = React.createClass({
           people[person.id] = person;
         }.bind(this));
 
+        people = _.sortBy(people, 'last_name');
+
         this.props.showPeople(this.props.id, people);
       }.bind(this));
   },
