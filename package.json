@@ -7,7 +7,7 @@
     "deploy": "npm install && npm run compile-js && npm run start",
     "clean": "git clean -fxd",
     "watch-js": "watchify js/app.jsx --extension=.jsx -o build/bundle.js --debug --verbose",
-    "compile-js": "mkdir build && browserify js/app.jsx --extension=.jsx -o build/bundle.js",
+    "compile-js": "browserify js/app.jsx --extension=.jsx -o build/bundle.js",
     "start": "node server.js"
   },
   "author": "",
