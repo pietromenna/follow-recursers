@@ -29,7 +29,7 @@ app.get('/', function(req, res){
   }
 });
 
-var ghAccessToken;
+var req.session.ghAccessToken;
 /////////////////////
 // Recurse Center API
 /////////////////////
@@ -154,14 +154,14 @@ app.get('/oauth/github/callback', function(req, res) {
 
   }, function(error,response,body)
   {
-    ghAccessToken = JSON.parse(body).access_token;
+    req.session.ghAccessToken = JSON.parse(body).access_token;
 
     res.redirect('/');
   });
 });
 
 app.get('/github/loggedin', function (req, res) {
-  if (!ghAccessToken) {
+  if (!req.session.ghAccessToken) {
     res.status(401);
   }
   else {
@@ -175,7 +175,7 @@ app.get('/github/loggedin', function (req, res) {
 app.post('/github/follow', function (req, res) {
   var usernames = req.body.usernames;
   usernames.forEach(function (username) {
-    var url = 'https://api.github.com/user/following/' + username.github + '?access_token=' + ghAccessToken;
+    var url = 'https://api.github.com/user/following/' + username.github + '?access_token=' + req.session.ghAccessToken;
 
     request({
       method: 'put',
