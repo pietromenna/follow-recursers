@@ -22,7 +22,7 @@ var GithubFollowButton = React.createClass({
   },
 
   render: function () {
-    return <button type="button" onClick={ this._followButtonClick }>Follow on Github</button>
+    return <button type="button" className="follow-github-button" onClick={ this._followButtonClick }>Follow on Github</button>
   }
 });
 

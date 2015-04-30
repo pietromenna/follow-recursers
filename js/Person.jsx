@@ -8,12 +8,12 @@ var Person = React.createClass({
   render: function () {
     return (
       <div className="person">
-        <h3>{ this.props.name }</h3>
         <input
           type="checkbox"
           checked={ this.props.selected }
           onChange={ this._toggle }
         />
+        <h3>{ this.props.name }</h3>
       </div>
     );
   }

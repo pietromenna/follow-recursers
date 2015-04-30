@@ -17,7 +17,7 @@ var TwitterFollowButton = React.createClass({
   },
 
   render: function () {
-    return <button type="button">Follow on Twitter</button>
+    return <button type="button" className="follow-twitter-button" onClick={ this._followButtonClick }>Follow on Twitter</button>
   }
 });
 

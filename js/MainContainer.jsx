@@ -90,9 +90,16 @@ var MainContainer = React.createClass({
 
     return (
       <div className="main-container">
-        <GithubFollowButton batches={ this.state.batches }/>
-        <TwitterFollowButton batches={ this.state.batches }/>
-        { batches }
+        <div className="main-title">
+          <h1>Follow Recursers</h1>
+          <div className="buttons">
+            <GithubFollowButton batches={ this.state.batches }/>
+            <TwitterFollowButton batches={ this.state.batches }/>
+          </div>
+        </div>
+        <div className="batch-list">
+          { batches }
+        </div>
       </div>
     );
   }

@@ -55,15 +55,17 @@ var Batch = React.createClass({
 
     return (
       <div className="batch">
-        { show }
-        <h2>{ this.props.name }</h2>
-        <input
+         <input
           type="checkbox"
           name="add-batch"
           checked={ this.props.selected }
           onChange={ this._toggle }
         />
-        { people }
+        <h2>{ this.props.name }</h2>
+        { show }
+        <div className="people">
+          { people }
+        </div>
       </div>
     )
   }

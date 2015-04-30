@@ -1,0 +1,136 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Styles begin here!*/
+body {
+	font-family: 'Lucida Grande', sans-serif;
+}
+
+.main-container {
+	width: 800px;
+	margin: 0 auto;
+}
+
+.main-title {
+  	background-color: #222;
+  	border-top: 5px solid #61ae24;
+  	color: #eee;
+  	overflow: hidden;
+  	padding: 20px;
+}
+
+.main-title h1 {
+	float: left;
+	font-size: 24px;
+}
+
+.buttons {
+	float: right;
+	line-height: 80px;
+}
+
+.follow-github-button {
+	border: none;
+	background-image: linear-gradient(#8add6d, #60b044);
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
+	padding: 10px 5px;
+	font-size: 14px;
+}
+
+.follow-twitter-button {
+	background-image: linear-gradient(#80c6f6, #41aaf1);
+	color: #fff;
+	border: none;
+	padding: 10px 5px;
+	font-size: 14px;
+	margin-left: 10px;
+}
+
+.batches {
+	
+}
+
+.batch {
+	padding: 10px;
+}
+
+.batch h2{
+	display: inline-block;
+	margin-left: 5px;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.batch button{
+	display: inline-block;
+	float: right;
+}
+
+.batch input{
+	display: inline-block;
+}
+
+.people {
+	margin-left: 20px;
+}
+
+.person {
+	padding: 5px;
+}
+
+.person h3{
+	font-size: 14px;
+	display: inline-block;
+	margin-left: 5px;
+}
+
+.person input{
+	display: inline-block;
+}

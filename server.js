@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static('build'));
+app.use("/styles", express.static('styles'));
 
 // Twitter API
 var twitterAPI = require('node-twitter-api');
