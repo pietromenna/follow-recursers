@@ -133,10 +133,12 @@ app.post('/twitter/follow', function (req, res) {
 /////////////////////
 //GitHub
 /////////////////////
+var github_redirect_uri = process.env.GITHUB_REDIRECT_URI || "http://localhost:4000/oauth/github/callback";
+
 app.get('/login/github', function(req, res) {
   res.redirect("https://github.com/login/oauth/authorize?" +
     "client_id="+ process.env.GITHUB_CLIENT_ID + "&" +
-    "redirect_uri="+ "http://localhost:4000/oauth/github/callback" + "&" +
+    "redirect_uri="+ github_redirect_uri + "&" +
     "scope=" + "user:follow" + "&" +
     "state=" + "owfowjowjfjwofjw"
     );
