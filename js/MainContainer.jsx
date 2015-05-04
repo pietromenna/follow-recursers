@@ -42,7 +42,9 @@ var MainContainer = React.createClass({
     this.setState(function (prevState) {
       prevState.batches.forEach(function (curBatch, batchIndex) {
         if (curBatch.id === batchId) {
-          prevState.batches[batchIndex].people[id].selected = !prevState.batches[batchIndex].people[id].selected;
+           prevState.batches[batchIndex].people.forEach(function (person, personIndex){
+            if (person.id === id) prevState.batches[batchIndex].people[personIndex].selected = !prevState.batches[batchIndex].people[personIndex].selected;
+           });
         }
       });
 
@@ -60,7 +62,7 @@ var MainContainer = React.createClass({
           batch.selected = !batch.selected;
           var people = _.values(batch.people);
           people.forEach(function(person, personIndex){
-            batch.people[person.id].selected = batch.selected;
+            batch.people[personIndex].selected = batch.selected;
           })
           break;
         }
